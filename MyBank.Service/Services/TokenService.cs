@@ -1,7 +1,7 @@
-﻿using MyBank.Domain.Entities;
+﻿using Microsoft.IdentityModel.Tokens;
+using MyBank.Domain.Users.Entities;
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
 

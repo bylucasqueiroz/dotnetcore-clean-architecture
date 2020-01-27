@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyBank.Domain.Entities;
+using MyBank.Domain.Users.Entities;
 using MyBank.Infrastructure.Configurations;
 
 namespace MyBank.Infrastructure.Context

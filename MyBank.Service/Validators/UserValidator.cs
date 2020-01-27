@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using MyBank.Domain.Entities;
+using MyBank.Domain.Users.Entities;
 using System;
 
 namespace MyBank.Service.Validators

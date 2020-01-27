@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MyBank.Domain.Entities;
+using MyBank.Domain.Users.Entities;
 
 namespace MyBank.Infrastructure.Configurations
 {
@@ -10,7 +10,8 @@ namespace MyBank.Infrastructure.Configurations
         {
             builder.ToTable("User");
 
-            builder.HasKey(c => c.Id);
+            builder.HasKey(c => c.Id)
+                .HasName("Id");
 
             builder.Property(c => c.Agency)
                 .IsRequired()

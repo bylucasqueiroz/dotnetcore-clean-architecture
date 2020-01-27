@@ -1,4 +1,6 @@
-﻿namespace MyBank.Domain.Entities
+﻿using MyBank.Domain.Entities;
+
+namespace MyBank.Domain.Users.Entities
 {
     public class User : BaseEntity
     {
