@@ -22,6 +22,7 @@ namespace MyBank.Application.Controllers
 
         [HttpPost]
         [Route("Login")]
+        [AllowAnonymous]
         public async Task<ActionResult<dynamic>> Authenticate([FromBody]Auth request)
         {
             try
@@ -55,8 +56,9 @@ namespace MyBank.Application.Controllers
             
         }
 
-        [HttpPost()]
+        [HttpPost]
         [Route("Create")]
+        [Authorize]
         public async Task<ActionResult<string>> Create([FromBody]User user)
         {
             try
@@ -82,7 +84,8 @@ namespace MyBank.Application.Controllers
         }
 
         [HttpGet]
-        [Route("Search")]
+        [Route("Search/{id}")]
+        [Authorize]
         public async Task<ActionResult<User>> GetId(int id)
         {
             try
@@ -99,6 +102,7 @@ namespace MyBank.Application.Controllers
 
         [HttpGet]
         [Route("List")]
+        [Authorize]
         public ActionResult<IQueryable<User>> GetAll()
         {
             try
