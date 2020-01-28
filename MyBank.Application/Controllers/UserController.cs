@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyBank.Domain.Entities.User;
+using MyBank.Domain.Interfaces;
 using MyBank.Domain.Users.Entities;
 using MyBank.Infrastructure.Context;
 using MyBank.Service.Services;
+using MyBank.Service.Validators;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +18,8 @@ namespace MyBank.Application.Controllers
     public class UserController : ControllerBase
     {
         private readonly MyBankContext _myBankContext;
+
+        private IService<User> service = new BaseService<User>();
         public UserController(MyBankContext myBankContext)
         {
             _myBankContext = myBankContext;
@@ -59,62 +64,96 @@ namespace MyBank.Application.Controllers
         [HttpPost]
         [Route("Create")]
         [Authorize]
-        public async Task<ActionResult<string>> Create([FromBody]User user)
+        public IActionResult Post([FromBody] User item)
         {
             try
             {
-                var newUser = new User()
-                {
-                    Agency = user.Agency,
-                    Account = user.Account,
-                    Password = user.Password,
-                    IdData = user.IdData
-                };
+                service.Post<UserValidator>(item);
 
-                _myBankContext.Users.Add(newUser);
-
-                await _myBankContext.SaveChangesAsync();
-
-                return Ok("Usuário cadastrado com sucesso!");
+                return new ObjectResult(item.Id);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return NotFound(ex);
             }
             catch (Exception ex)
             {
-                throw ex;
+                return BadRequest(ex);
             }
         }
 
         [HttpGet]
         [Route("Search/{id}")]
         [Authorize]
-        public async Task<ActionResult<User>> GetId(int id)
+        public IActionResult Get(int id)
         {
             try
             {
-                var user = await _myBankContext.Users.FindAsync(id);
-
-                return Ok(user);
+                return new ObjectResult(service.Get(id));
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex);
             }
             catch (Exception ex)
             {
-                throw ex;
+                return BadRequest(ex);
             }
         }
 
         [HttpGet]
         [Route("List")]
         [Authorize]
-        public ActionResult<IQueryable<User>> GetAll()
+        public IActionResult Get()
         {
             try
             {
-                var lista = _myBankContext.Users.AsQueryable();
-
-                return Ok(lista);
+                return new ObjectResult(service.Get());
             }
             catch (Exception ex)
             {
-                throw ex;
-            } 
+                return BadRequest(ex);
+            }
         }
+
+        [HttpGet]
+        [Route("delete")]
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                service.Delete(id);
+
+                return new NoContentResult();
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        public IActionResult Put([FromBody] User item)
+        {
+            try
+            {
+                service.Put<UserValidator>(item);
+
+                return new ObjectResult(item);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return NotFound(ex);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
     }
 }

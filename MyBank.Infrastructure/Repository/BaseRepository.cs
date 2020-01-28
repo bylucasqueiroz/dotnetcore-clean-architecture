@@ -10,6 +10,11 @@ namespace MyBank.Infrastructure.Repository
     {
         private MyBankContext context;
 
+        public BaseRepository(MyBankContext _context)
+        {
+            context = _context;
+        }
+
         public void Insert(T obj)
         {
             context.Set<T>().Add(obj);
