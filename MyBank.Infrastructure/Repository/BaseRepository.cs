@@ -8,12 +8,7 @@ namespace MyBank.Infrastructure.Repository
 {
     public class BaseRepository<T> : IRepository<T> where T : BaseEntity
     {
-        private MyBankContext context;
-
-        public BaseRepository(MyBankContext _context)
-        {
-            context = _context;
-        }
+        private MyBankContext context = new MyBankContext();
 
         public void Insert(T obj)
         {

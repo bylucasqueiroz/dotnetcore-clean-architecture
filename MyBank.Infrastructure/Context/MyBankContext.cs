@@ -6,12 +6,12 @@ namespace MyBank.Infrastructure.Context
 {
     public class MyBankContext : DbContext
     {
-        public MyBankContext(DbContextOptions<MyBankContext> options) : base(options)
-        {
-
-        }
-
         public DbSet<User> Users { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=MyBank;Trusted_Connection=True;MultipleActiveResultSets=true");
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

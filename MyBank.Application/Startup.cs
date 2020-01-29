@@ -29,7 +29,7 @@ namespace MyBank.Application
 
             services.AddControllers();
 
-            services.AddDbContext<MyBankContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MyBankConnection")));
+            //services.AddDbContext<MyBankContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MyBankConnection")));
 
             var key = Encoding.ASCII.GetBytes(Settings.Secret);
             services.AddAuthentication(x =>

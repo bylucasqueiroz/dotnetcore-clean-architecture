@@ -17,13 +17,9 @@ namespace MyBank.Application.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly MyBankContext _myBankContext;
+        private BaseService<User> service = new BaseService<User>();
 
-        private IService<User> service = new BaseService<User>();
-        public UserController(MyBankContext myBankContext)
-        {
-            _myBankContext = myBankContext;
-        }
+        private MyBankContext context = new MyBankContext();
 
         [HttpPost]
         [Route("Login")]
@@ -33,7 +29,7 @@ namespace MyBank.Application.Controllers
             try
             {
                 // Recupera o usuário
-                var user = _myBankContext.Users.Where(x => x.Account == request.Account && x.Agency == request.Agency).FirstOrDefault();
+                var user = context.Users.Where(x => x.Account == request.Account && x.Agency == request.Agency).FirstOrDefault();
 
                 // Verifica se o usuário existe
                 if (user == null)
