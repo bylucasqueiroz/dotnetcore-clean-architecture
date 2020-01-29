@@ -18,6 +18,7 @@ namespace MyBank.Service.Services
                 Subject = new ClaimsIdentity(new Claim[]{
                     new Claim(ClaimTypes.NameIdentifier, user.Agency.ToString()),
                     new Claim(ClaimTypes.NameIdentifier, user.Account.ToString()),
+                    new Claim("Store", user.Office)
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

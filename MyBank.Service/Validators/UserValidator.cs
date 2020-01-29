@@ -27,7 +27,7 @@ namespace MyBank.Service.Validators
                 .NotEmpty().WithMessage("Is necessary to inform the Password.")
                 .NotNull().WithMessage("Is necessary to inform the birth Password.");
 
-            RuleFor(c => c.IdData)
+            RuleFor(c => c.Office)
                 .NotEmpty().WithMessage("Is necessary to inform the Data.")
                 .NotNull().WithMessage("Is necessary to inform the birth Data.");
         }

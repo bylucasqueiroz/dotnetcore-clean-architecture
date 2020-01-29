@@ -25,7 +25,8 @@ namespace MyBank.Infrastructure.Configurations
                 .IsRequired()
                 .HasColumnName("Password");
 
-            builder.Property(c => c.IdData)
+            builder.Property(c => c.Office)
+                .HasColumnName("Office")
                 .IsRequired();
         }
     }

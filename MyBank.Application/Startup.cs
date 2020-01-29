@@ -1,13 +1,15 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MyBank.Infrastructure.Context;
 using MyBank.Service.Services;
 using System.Text;
 
@@ -26,8 +28,22 @@ namespace MyBank.Application
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-
             services.AddControllers();
+
+            services.AddMvc(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                                 .RequireAuthenticatedUser()
+                                 .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Client", policy => policy.RequireClaim("Store", "Client"));
+                options.AddPolicy("Manager", policy => policy.RequireClaim("Store", "Manager"));
+            });
 
             //services.AddDbContext<MyBankContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MyBankConnection")));
 
@@ -49,6 +65,8 @@ namespace MyBank.Application
                     ValidateAudience = false
                 };
             });
+
+            
 
             services.AddSwaggerGen(c =>
             {
@@ -75,6 +93,9 @@ namespace MyBank.Application
                     }
                 });
             });
+
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
